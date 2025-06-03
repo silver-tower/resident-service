@@ -1,4 +1,4 @@
-package com.silvertown.residentservice;
+package com.silvertown.resident;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
