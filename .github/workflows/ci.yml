@@ -34,7 +34,7 @@ jobs:
 
       # 의존성 설치
       - name: Set up dependencies
-        run: ./gradlew install -DskipTests=true
+        run: ./gradlew build  -DskipTests=true
         # 의존성 설치: 테스트를 실행하지 않고 필요한 라이브러리만 다운로드
 
       # 테스트 실행
