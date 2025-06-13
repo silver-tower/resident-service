@@ -1,5 +1,6 @@
-package com.silvertown.resident_service.person.domain.model.vo;
+package com.silvertown.resident_service.common;
 
+import com.silvertown.resident_service.person.domain.model.vo.BirthDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

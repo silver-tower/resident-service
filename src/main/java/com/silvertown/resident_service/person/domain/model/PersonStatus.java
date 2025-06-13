@@ -24,13 +24,14 @@ public enum PersonStatus {
             }};
             return availableTransition.contains(status);
         }
-    }, DELETED {
+    },
+    DELETED {
         @Override
         public boolean canTransitionTo(PersonStatus status) {
             return false;
         }
     },
     ;
-    public abstract boolean canTransitionTo(PersonStatus newStatus);
 
+    public abstract boolean canTransitionTo(PersonStatus newStatus);
 }

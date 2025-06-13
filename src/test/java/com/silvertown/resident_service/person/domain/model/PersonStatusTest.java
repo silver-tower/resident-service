@@ -5,17 +5,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 @DisplayName("PersonStatus")
 class PersonStatusTest {
 
     @Test
     @DisplayName("ACTIVE 상태는 INACTIVE와 DELETED로 전환 가능해야 한다")
     void shouldTransitionFromActiveToInactiveOrDeleted() {
-        // Given
+
         PersonStatus currentStatus = PersonStatus.ACTIVE;
 
-        // When & Then
         assertTrue(currentStatus.canTransitionTo(PersonStatus.INACTIVE), "ACTIVE -> INACTIVE 전환 가능");
         assertTrue(currentStatus.canTransitionTo(PersonStatus.DELETED), "ACTIVE -> DELETED 전환 가능");
 
@@ -25,10 +23,9 @@ class PersonStatusTest {
     @Test
     @DisplayName("INACTIVE 상태는 ACTIVE와 DELETED로 전환 가능해야 한다")
     void shouldTransitionFromInactiveToActiveOrDeleted() {
-        // Given
+
         PersonStatus currentStatus = PersonStatus.INACTIVE;
 
-        // When & Then
         assertTrue(currentStatus.canTransitionTo(PersonStatus.ACTIVE), "INACTIVE -> ACTIVE 전환 가능");
         assertTrue(currentStatus.canTransitionTo(PersonStatus.DELETED), "INACTIVE -> DELETED 전환 가능");
 
@@ -38,10 +35,9 @@ class PersonStatusTest {
     @Test
     @DisplayName("DELETED 상태는 어떤 상태로도 전환할 수 없어야 한다")
     void shouldNotAllowAnyTransitionFromDeleted() {
-        // Given
+
         PersonStatus currentStatus = PersonStatus.DELETED;
 
-        // When & Then
         assertFalse(currentStatus.canTransitionTo(PersonStatus.ACTIVE), "DELETED -> ACTIVE 전환 불가능");
         assertFalse(currentStatus.canTransitionTo(PersonStatus.INACTIVE), "DELETED -> INACTIVE 전환 불가능");
         assertFalse(currentStatus.canTransitionTo(PersonStatus.DELETED), "DELETED -> DELETED 전환 불가능");

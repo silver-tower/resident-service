@@ -1,5 +1,4 @@
-package com.silvertown.resident_service.person.domain.model.vo;
-
+package com.silvertown.resident_service.common.vo;
 
 public record Email(String value) {
     private static final String EMAIL_REGEX = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
