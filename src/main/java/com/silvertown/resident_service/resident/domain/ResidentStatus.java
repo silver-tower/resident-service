@@ -50,6 +50,4 @@ public enum ResidentStatus {
     };
 
     public abstract boolean canTransitionTo(ResidentStatus newStatus);
-
-
 }

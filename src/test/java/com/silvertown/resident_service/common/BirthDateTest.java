@@ -24,5 +24,4 @@ class BirthDateTest {
         Date today = new Date();
         assertThrows(IllegalArgumentException.class, () -> new BirthDate(today));
     }
-
 }

@@ -9,5 +9,4 @@ class ResidentServiceApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }
