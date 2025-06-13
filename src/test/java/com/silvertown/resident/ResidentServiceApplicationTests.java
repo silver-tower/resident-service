@@ -1,4 +1,4 @@
-package com.silvertown.resident_service;
+package com.silvertown.resident;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,4 +9,5 @@ class ResidentServiceApplicationTests {
     @Test
     void contextLoads() {
     }
+
 }

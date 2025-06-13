@@ -1,4 +1,4 @@
-package com.silvertown.resident_service;
+package com.silvertown.resident;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
