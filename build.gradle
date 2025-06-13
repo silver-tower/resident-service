@@ -34,6 +34,14 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+test {
+    testLogging {
+        events "passed", "skipped", "failed" // 성공, 실패, 생략된 테스트 표시
+        exceptionFormat = 'short' // 에러 메시지 출력 형식 설정
+        showStandardStreams = true // 표준 출력 보기
+    }
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
