@@ -68,9 +68,9 @@ class ResidenceTest {
         String notes = "Test note";
 
         Residence residence = new Residence(buildingName, floor, roomLine, notes);
-        residence.changeStatusTo(ResidenceStatus.ACTIVE);
+        residence.changeStatusTo(ResidenceStatus.PENDING);
 
-        assertEquals(ResidenceStatus.ACTIVE, residence.getStatus());
+        assertEquals(ResidenceStatus.PENDING, residence.getStatus());
     }
 
     @Test

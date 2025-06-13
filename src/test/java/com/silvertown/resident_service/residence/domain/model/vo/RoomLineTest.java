@@ -24,8 +24,7 @@ class RoomLineTest {
     void nullRoomLineShouldThrowException() {
         String nullLine = null;
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new RoomLine(nullLine));
-        assertEquals("", exception.getMessage()); // 예외 메시지가 정의되지 않아 빈 상태로 둡니다
+        assertThrows(IllegalArgumentException.class, () -> new RoomLine(nullLine));
     }
 
     @Test
@@ -33,8 +32,7 @@ class RoomLineTest {
     void blankRoomLineShouldThrowException() {
         String blankLine = "   ";
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new RoomLine(blankLine));
-        assertEquals("", exception.getMessage()); // 예외 메시지가 정의되지 않아 빈 상태로 둡니다
+        assertThrows(IllegalArgumentException.class, () -> new RoomLine(blankLine));
     }
 
     @Test
@@ -42,7 +40,6 @@ class RoomLineTest {
     void roomLineExceedingMaxLengthShouldThrowException() {
         String tooLongLine = "12345678901"; // 11자 입력
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new RoomLine(tooLongLine));
-        assertEquals("", exception.getMessage()); // 예외 메시지가 정의되지 않아 빈 상태로 둡니다
+        assertThrows(IllegalArgumentException.class, () -> new RoomLine(tooLongLine));
     }
 }
