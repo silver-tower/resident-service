@@ -1,5 +1,7 @@
 package com.silvertown.resident_service.person.domain.model;
 
+import com.silvertown.resident_service.common.exception.CustomError;
+import com.silvertown.resident_service.common.exception.ErrorCode;
 import com.silvertown.resident_service.person.domain.model.vo.BirthDate;
 import com.silvertown.resident_service.common.vo.Email;
 import com.silvertown.resident_service.common.vo.Name;
@@ -19,9 +21,9 @@ public class Person {
     private Email email;
 
     public Person(Name name, BirthDate birthDate, Gender gender) {
-        if (name == null) throw new IllegalArgumentException("");
-        if (birthDate == null) throw new IllegalArgumentException("");
-        if (gender == null) throw new IllegalArgumentException("");
+        if (name == null) throw CustomError.of(ErrorCode.USER_INPUT_INVALID);
+        if (birthDate == null) throw CustomError.of(ErrorCode.USER_INPUT_INVALID);
+        if (gender == null) throw CustomError.of(ErrorCode.USER_INPUT_INVALID);
         this.status = PersonStatus.ACTIVE;
         this.name = name;
         this.birthDate = birthDate;

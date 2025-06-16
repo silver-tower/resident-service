@@ -1,5 +1,7 @@
 package com.silvertown.resident_service.resident.domain;
 
+import com.silvertown.resident_service.common.exception.CustomError;
+import com.silvertown.resident_service.common.exception.ErrorCode;
 import com.silvertown.resident_service.person.domain.model.Person;
 import com.silvertown.resident_service.residence.domain.model.EmergencyContact;
 import com.silvertown.resident_service.residence.domain.model.Residence;
@@ -24,9 +26,9 @@ public class Resident {
     private String notes;
 
     public Resident(Person person, Residence residence, List<EmergencyContact> emergencyContacts, Date moveInDate, Date moveOutDate, String notes) {
-        if (person == null) throw new IllegalArgumentException("");
-        if (residence == null) throw new IllegalArgumentException("");
-        if (emergencyContacts == null) throw new IllegalArgumentException("");
+        if (person == null) throw CustomError.of(ErrorCode.RESIDENT_BAD_REQUEST);
+        if (residence == null) throw CustomError.of(ErrorCode.RESIDENT_BAD_REQUEST);
+        if (emergencyContacts == null) throw CustomError.of(ErrorCode.RESIDENT_BAD_REQUEST);
         this.person = person;
         this.residence = residence;
         this.emergencyContacts = emergencyContacts;
