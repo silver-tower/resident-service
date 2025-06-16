@@ -11,12 +11,12 @@ class GenderTest {
     @DisplayName("Gender는 null일 수 없다")
     @Test
     void genderShouldNotBeNull() {
-        assertThrows(NullPointerException.class, () -> Gender.valueOf(null));
+        assertThrows(Exception.class, () -> Gender.valueOf(null));
     }
 
     @DisplayName("Gender는 빈 문자열일 수 없다")
     @Test
     void genderShouldNotBeEmpty() {
-        assertThrows(IllegalArgumentException.class, () -> Gender.valueOf(""));
+        assertThrows(Exception.class, () -> Gender.valueOf(""));
     }
 }

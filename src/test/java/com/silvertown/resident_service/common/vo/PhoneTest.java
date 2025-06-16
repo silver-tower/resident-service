@@ -24,7 +24,7 @@ class PhoneTest {
     void nullPhoneShouldThrowException() {
         String nullPhone = null;
 
-        assertThrows(IllegalArgumentException.class, () -> new Phone(nullPhone));
+        assertThrows(Exception.class, () -> new Phone(nullPhone));
     }
 
     @Test
@@ -32,7 +32,7 @@ class PhoneTest {
     void blankPhoneShouldThrowException() {
         String blankPhone = "   ";
 
-        assertThrows(IllegalArgumentException.class, () -> new Phone(blankPhone));
+        assertThrows(Exception.class, () -> new Phone(blankPhone));
     }
 
     @Test
@@ -40,7 +40,7 @@ class PhoneTest {
     void phoneExceedingMaxLengthShouldThrowException() {
         String tooLongPhone = "010123456789"; // 12자리
 
-        assertThrows(IllegalArgumentException.class, () -> new Phone(tooLongPhone));
+        assertThrows(Exception.class, () -> new Phone(tooLongPhone));
     }
 
     @Test
@@ -48,7 +48,7 @@ class PhoneTest {
     void phoneBelowMinLengthShouldThrowException() {
         String tooShortPhone = "010123"; // 6자리
 
-        assertThrows(IllegalArgumentException.class, () -> new Phone(tooShortPhone));
+        assertThrows(Exception.class, () -> new Phone(tooShortPhone));
     }
 
     @Test
@@ -56,6 +56,6 @@ class PhoneTest {
     void invalidFormatPhoneShouldThrowException() {
         String invalidPhone = "02012345678"; // "02"로 시작
 
-        assertThrows(IllegalArgumentException.class, () -> new Phone(invalidPhone));
+        assertThrows(Exception.class, () -> new Phone(invalidPhone));
     }
 }

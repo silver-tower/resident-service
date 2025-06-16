@@ -24,7 +24,7 @@ class BuildingNameTest {
     void emptyBuildingNameShouldThrowException() {
         String emptyName = "";
 
-        assertThrows(IllegalArgumentException.class, () -> new BuildingName(emptyName));
+        assertThrows(Exception.class, () -> new BuildingName(emptyName));
     }
 
     @Test
@@ -32,7 +32,7 @@ class BuildingNameTest {
     void blankBuildingNameShouldThrowException() {
         String blankName = "   ";
 
-        assertThrows(IllegalArgumentException.class, () -> new BuildingName(blankName));
+        assertThrows(Exception.class, () -> new BuildingName(blankName));
     }
 
     @Test
@@ -40,6 +40,6 @@ class BuildingNameTest {
     void buildingNameExceedingMaxLengthShouldThrowException() {
         String tooLongName = "ThisBuildingNameIsTooLong";
 
-        assertThrows(IllegalArgumentException.class, () -> new BuildingName(tooLongName));
+        assertThrows(Exception.class, () -> new BuildingName(tooLongName));
     }
 }

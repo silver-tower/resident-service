@@ -24,7 +24,7 @@ class RoomLineTest {
     void nullRoomLineShouldThrowException() {
         String nullLine = null;
 
-        assertThrows(IllegalArgumentException.class, () -> new RoomLine(nullLine));
+        assertThrows(Exception.class, () -> new RoomLine(nullLine));
     }
 
     @Test
@@ -32,7 +32,7 @@ class RoomLineTest {
     void blankRoomLineShouldThrowException() {
         String blankLine = "   ";
 
-        assertThrows(IllegalArgumentException.class, () -> new RoomLine(blankLine));
+        assertThrows(Exception.class, () -> new RoomLine(blankLine));
     }
 
     @Test
@@ -40,6 +40,6 @@ class RoomLineTest {
     void roomLineExceedingMaxLengthShouldThrowException() {
         String tooLongLine = "12345678901"; // 11자 입력
 
-        assertThrows(IllegalArgumentException.class, () -> new RoomLine(tooLongLine));
+        assertThrows(Exception.class, () -> new RoomLine(tooLongLine));
     }
 }

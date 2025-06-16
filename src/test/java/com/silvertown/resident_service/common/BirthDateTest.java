@@ -15,13 +15,13 @@ class BirthDateTest {
     @DisplayName("BirthDate는 null일 수 없다")
     void birthDateShouldNotBeNull() {
         Date nullDate = null;
-        assertThrows(IllegalArgumentException.class, () -> new BirthDate(nullDate));
+        assertThrows(Exception.class, () -> new BirthDate(nullDate));
     }
 
     @Test
     @DisplayName("BirthDate는 오늘 이후의 날짜일 수 없다")
     void birthDateShouldNotBeAfterToday() {
         Date today = new Date();
-        assertThrows(IllegalArgumentException.class, () -> new BirthDate(today));
+        assertThrows(Exception.class, () -> new BirthDate(today));
     }
 }

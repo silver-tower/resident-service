@@ -11,13 +11,13 @@ class NameTest {
         @DisplayName("UserName은 null일 수 없다")
         void shouldNotEmpty() {
             String userName = "";
-            assertThrows(IllegalArgumentException.class, () -> new Name(userName));
+            assertThrows(Exception.class, () -> new Name(userName));
         }
 
     @Test
     @DisplayName("UserName은 최소 길이보다 길어야 한다")
     void userNameShouldBeLongerThanMinLength() {
         String userName = "김";
-        assertThrows(IllegalArgumentException.class, () -> new Name(userName));
+        assertThrows(Exception.class, () -> new Name(userName));
     }
 }

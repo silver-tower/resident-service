@@ -1,5 +1,7 @@
 package com.silvertown.resident_service.residence.domain.model;
 
+import com.silvertown.resident_service.common.exception.CustomError;
+import com.silvertown.resident_service.common.exception.ErrorCode;
 import com.silvertown.resident_service.residence.domain.model.vo.BuildingName;
 import com.silvertown.resident_service.residence.domain.model.vo.Floor;
 import com.silvertown.resident_service.residence.domain.model.vo.RoomLine;
@@ -20,9 +22,9 @@ public class Residence {
     private ResidenceStatus status;
 
     public Residence(BuildingName buildingName, Floor floor, RoomLine roomLine, String notes) {
-        if (buildingName == null) throw new IllegalArgumentException("");
-        if (floor == null) throw new IllegalArgumentException("");
-        if (roomLine == null) throw new IllegalArgumentException("");
+        if (buildingName == null) throw CustomError.of(ErrorCode.RESIDENCE_BAD_REQUEST);
+        if (floor == null) throw CustomError.of(ErrorCode.RESIDENCE_BAD_REQUEST);
+        if (roomLine == null) throw CustomError.of(ErrorCode.RESIDENCE_BAD_REQUEST);
         this.buildingName = buildingName;
         this.floor = floor;
         this.roomLine = roomLine;

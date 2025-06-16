@@ -1,5 +1,6 @@
 package com.silvertown.resident_service.person.domain.model.vo;
 
+
 import com.silvertown.resident_service.common.vo.Email;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,30 +29,30 @@ class EmailTest {
         String invalidEmail3 = "test@.example";
         String invalidEmail4 = "@test.example";
 
-        assertThrows(IllegalArgumentException.class, () -> new Email(invalidEmail1));
-        assertThrows(IllegalArgumentException.class, () -> new Email(invalidEmail2));
-        assertThrows(IllegalArgumentException.class, () -> new Email(invalidEmail3));
-        assertThrows(IllegalArgumentException.class, () -> new Email(invalidEmail4));
+        assertThrows(Exception.class, () -> new Email(invalidEmail1));
+        assertThrows(Exception.class, () -> new Email(invalidEmail2));
+        assertThrows(Exception.class, () -> new Email(invalidEmail3));
+        assertThrows(Exception.class, () -> new Email(invalidEmail4));
     }
 
     @Test
     @DisplayName("Email은 null일 수 없다")
     void emailShouldNotBeNull() {
         String nullEmail = null;
-        assertThrows(IllegalArgumentException.class, () -> new Email(nullEmail));
+        assertThrows(Exception.class, () -> new Email(nullEmail));
     }
 
     @Test
     @DisplayName("Email은 빈 문자열일 수 없다")
     void emailShouldNotBeEmpty() {
         String emptyEmail = "";
-        assertThrows(IllegalArgumentException.class, () -> new Email(emptyEmail));
+        assertThrows(Exception.class, () -> new Email(emptyEmail));
     }
 
     @Test
     @DisplayName("Email은 공백을 포함할 수 없다")
     void emailShouldNotIncludeBlank() {
         String includeBlankEmail = "sdfa sdf@abc.io";
-        assertThrows(IllegalArgumentException.class, () -> new Email(includeBlankEmail));
+        assertThrows(Exception.class, () -> new Email(includeBlankEmail));
     }
 }

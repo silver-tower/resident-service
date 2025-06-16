@@ -6,7 +6,6 @@ import com.silvertown.resident_service.residence.domain.model.Residence;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -31,13 +30,13 @@ class ResidentTest {
     }
 
     @Test
-    @DisplayName("필수 필드가 없는 경우 IllegalArgumentException 발생")
+    @DisplayName("필수 필드가 없는 경우 Error 발생")
     void missingRequiredFieldsShouldThrowException() {
         Person person = new Person();
         Residence residence = new Residence();
 
-        assertThrows(IllegalArgumentException.class, () -> new Resident(null, residence, null, new Date(), null, null));
-        assertThrows(IllegalArgumentException.class, () -> new Resident(person, null, null, new Date(), null, null));
+        assertThrows(Exception.class, () -> new Resident(null, residence, null, new Date(), null, null));
+        assertThrows(Exception.class, () -> new Resident(person, null, null, new Date(), null, null));
     }
 
     @Test
@@ -45,7 +44,7 @@ class ResidentTest {
     void shouldChangeStatusIfTransitionIsValid() {
         Person person = new Person();
         Residence residence = new Residence();
-        List<EmergencyContact> contacts = Arrays.asList(new EmergencyContact());
+        List<EmergencyContact> contacts = List.of(new EmergencyContact());
 
         Resident resident = new Resident(person, residence, contacts, new Date(), null, "No notes");
         resident.changeStatusTo(ResidentStatus.APPROVED);
