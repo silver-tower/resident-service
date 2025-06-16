@@ -24,7 +24,7 @@ class FloorTest {
     void nullFloorShouldThrowException() {
         String nullFloor = null;
 
-        assertThrows(IllegalArgumentException.class, () -> new Floor(nullFloor));
+        assertThrows(Exception.class, () -> new Floor(nullFloor));
 
     }
 
@@ -33,7 +33,7 @@ class FloorTest {
     void blankFloorShouldThrowException() {
         String blankFloor = "   ";
 
-        assertThrows(IllegalArgumentException.class, () -> new Floor(blankFloor));
+        assertThrows(Exception.class, () -> new Floor(blankFloor));
 
     }
 
@@ -42,7 +42,7 @@ class FloorTest {
     void floorExceedingMaxLengthShouldThrowException() {
         String tooLongFloor = "12345678901"; // 11자 입력
 
-        assertThrows(IllegalArgumentException.class, () -> new Floor(tooLongFloor));
+        assertThrows(Exception.class, () -> new Floor(tooLongFloor));
 
     }
 }

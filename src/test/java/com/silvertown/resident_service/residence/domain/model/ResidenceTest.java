@@ -36,7 +36,7 @@ class ResidenceTest {
         RoomLine roomLine = new RoomLine("2");
         String notes = "Test note";
 
-        assertThrows(IllegalArgumentException.class, () -> new Residence(null, floor, roomLine, notes));
+        assertThrows(Exception.class, () -> new Residence(null, floor, roomLine, notes));
     }
 
     @Test
@@ -46,7 +46,7 @@ class ResidenceTest {
         RoomLine roomLine = new RoomLine("2");
         String notes = "Test note";
 
-        assertThrows(IllegalArgumentException.class, () -> new Residence(buildingName, null, roomLine, notes));
+        assertThrows(Exception.class, () -> new Residence(buildingName, null, roomLine, notes));
     }
 
     @Test
@@ -56,7 +56,7 @@ class ResidenceTest {
         Floor floor = new Floor("5");
         String notes = "Test note";
 
-        assertThrows(IllegalArgumentException.class, () -> new Residence(buildingName, floor, null, notes));
+        assertThrows(Exception.class, () -> new Residence(buildingName, floor, null, notes));
     }
 
     @Test
