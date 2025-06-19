@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <!-- Console Appender (ANSI 색상 적용) -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %clr([%d{yyyy-MM-dd HH:mm:ss}]){cyan} %clr([%-5level]){purple} [%thread] %clr([%logger{0}:%line]){green} [%clr(%X{requestId}){yellow}] %msg%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- File Appender (색상 없이 동일 패턴 적용) -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/application.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -7,11 +19,17 @@
             <maxHistory>7</maxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%-5level] [%thread] [%logger{0}:%line] [%X{requestId}] %msg%n</pattern>
+            <pattern>
+                [%d{yyyy-MM-dd HH:mm:ss}] [%-5level] [%thread] [%logger{0}:%line] [%X{requestId}] %msg%n
+            </pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
 
+    <!-- Root Logger -->
     <root level="INFO">
-        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
     </root>
+
 </configuration>
