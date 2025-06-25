@@ -8,11 +8,11 @@ public record LoginId(String loginId) {
     static int MIN_LENGTH = 5;
 
     public LoginId {
-        if (loginId.isEmpty()) throw CustomError.of(ErrorCode.USER_INPUT_INVALID);
-        if (loginId.contains(" ")) throw CustomError.of(ErrorCode.USER_INPUT_INVALID);
-        if (loginId.length() > LoginId.MAX_LENGTH) throw CustomError.of(ErrorCode.USER_INPUT_INVALID);
-        if (loginId.length() < LoginId.MIN_LENGTH) throw CustomError.of(ErrorCode.USER_INPUT_INVALID);
-        if (!loginId.matches("^[a-zA-Z0-9]*$")) throw CustomError.of(ErrorCode.USER_INPUT_INVALID);
+        if (loginId.isEmpty()) throw CustomError.of(ErrorCode.USER_INVALID_DATA);
+        if (loginId.contains(" ")) throw CustomError.of(ErrorCode.USER_BAD_REQUEST);
+        if (loginId.length() > LoginId.MAX_LENGTH) throw CustomError.of(ErrorCode.USER_BAD_REQUEST);
+        if (loginId.length() < LoginId.MIN_LENGTH) throw CustomError.of(ErrorCode.USER_BAD_REQUEST);
+        if (!loginId.matches("^[a-zA-Z0-9]*$")) throw CustomError.of(ErrorCode.USER_BAD_REQUEST);
     }
 }
 
