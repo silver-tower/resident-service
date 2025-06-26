@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.0'
     id 'io.spring.dependency-management' version '1.1.7'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.silver-town'
@@ -17,6 +18,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExt
 }
 
 repositories {
@@ -27,26 +29,54 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    runtimeOnly 'com.mysql:mysql-connector-j'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+ext {
+    snippetsDir = file("build/generated-snippets")
 }
 
 test {
+    useJUnitPlatform()
     testLogging {
-        events "passed", "skipped", "failed" // 성공, 실패, 생략된 테스트 표시
-        exceptionFormat = 'short' // 에러 메시지 출력 형식 설정
-        showStandardStreams = true // 표준 출력 보기
+        events "passed", "skipped", "failed"
+        exceptionFormat = 'short'
+        showStandardStreams = true
     }
     systemProperties = ["spring.profiles.active": "test"]
+    outputs.dir snippetsDir
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+asciidoctor {
+    dependsOn(test)
+    sourceDir = file("${projectDir}/src/docs/asciidoc") // Asciidoc 파일 소스 경로 설정
+    outputDir = file("${layout.buildDirectory.get()}/docs/asciidoc") // HTML 변환 파일의 출력 경로 설정
+    attributes 'snippets': snippetsDir
+
+}
+
+tasks.register('copyAsciidocToStatic', Copy) {
+    dependsOn asciidoctor
+    from("${layout.buildDirectory.get()}/docs/asciidoc") // 출력 경로를 직접 명시
+    into("${layout.buildDirectory.get()}/resources/main/static/docs") // 복사 대상 디렉토리
+    doLast {
+        println "HTML 파일이 복사되었습니다: ${layout.buildDirectory.get()}/resources/main/static/docs"
+    }
+}
+
+tasks.named('resolveMainClassName') {
+    dependsOn 'copyAsciidocToStatic' // 작업 간 의존성 추가
+}
+
+bootRun {
+    dependsOn copyAsciidocToStatic
 }

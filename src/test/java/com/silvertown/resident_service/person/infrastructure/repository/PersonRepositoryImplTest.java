@@ -1,6 +1,5 @@
 package com.silvertown.resident_service.person.infrastructure.repository;
 
-
 import com.silvertown.resident_service.person.infrastructure.entity.PersonEntity;
 import com.silvertown.resident_service.person.infrastructure.entity.PersonEntity.Gender;
 import com.silvertown.resident_service.person.infrastructure.entity.PersonEntity.Status;
