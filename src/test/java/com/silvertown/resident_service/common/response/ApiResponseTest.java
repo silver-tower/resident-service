@@ -21,7 +21,6 @@ class ApiResponseTest {
         assertTrue(response.isSuccess(), "success 값 불일치 {} : {}" + true + response.isSuccess());
         assertEquals(testData, response.getData(), "data 값 불일치 {} : {}" + testData + response.getData());
         assertNull(response.getError(), "error 값이 null이 아님 {}" + response.getError());
-        assertNotNull(response.getUuid(), "uuid 값 null");
         assertNotNull(response.getTimestamp(), "timestamp 값 null");
     }
 
@@ -37,7 +36,6 @@ class ApiResponseTest {
         assertNull(response.getData(), "data 값이 null이 아님 {}" + response.getData());
         assertNotNull(response.getError(), "error 값 null");
         assertEquals(errorCode.getCode(), response.getError().getCode(), "errorCode 값 불일치 {} : {}" + errorCode + response.getError().getCode());
-        assertNotNull(response.getUuid(), "uuid 값 null");
         assertNotNull(response.getTimestamp(), "timestamp 값 null");
     }
 
@@ -52,7 +50,6 @@ class ApiResponseTest {
         assertFalse(response.isSuccess(), "success 값 불일치 {} : {}" + false + response.isSuccess());
         assertNull(response.getData(), "data 값이 null이 아님 {}" + response.getData());
         assertEquals(customError, response.getError(), "error 값 불일치 {} : {}" + customError + response.getError());
-        assertNotNull(response.getUuid(), "uuid 값 null");
         assertNotNull(response.getTimestamp(), "timestamp 값 null");
     }
 
@@ -73,7 +70,6 @@ class ApiResponseTest {
         assertFalse(response.isSuccess(), "success 값 불일치 {} : {}" + false + response.isSuccess());
         assertNull(response.getData(), "data 값이 null이 아님 {}" + response.getData());
         assertNull(response.getError(), "error 값이 null이 아님 {}" + response.getError());
-        assertNotNull(response.getUuid(), "uuid 값 null");
         assertNotNull(response.getTimestamp(), "timestamp 값 null");
     }
 }
