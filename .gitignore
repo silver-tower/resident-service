@@ -39,3 +39,4 @@ out/
 ### log ###
 /logs
 *.log
+/src/main/resources/static/docs/*.html
