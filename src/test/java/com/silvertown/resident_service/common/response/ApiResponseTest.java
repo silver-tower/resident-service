@@ -56,9 +56,7 @@ class ApiResponseTest {
     @Test
     @DisplayName("에러 응답 생성 시 ErrorCode가 null인 경우 오류 발생")
     void shouldCreateErrorResponseWithNullErrorCode() {
-        assertThrows(Exception.class, () -> {
-            ApiResponse.error((ErrorCode) null);
-        });
+        assertThrows(Exception.class, () -> ApiResponse.error((ErrorCode) null));
     }
 
     @Test

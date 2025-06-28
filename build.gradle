@@ -6,23 +6,13 @@ plugins {
 }
 
 group = 'com.silver-town'
-version = '0.0.1-SNAPSHOT'
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
+version = '0.0.1'
 
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
     asciidoctorExt
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
@@ -41,42 +31,61 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+
 ext {
-    snippetsDir = file("build/generated-snippets")
+    snippetsDir = file('build/generated-snippets')
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
 }
 
 test {
+    outputs.dir snippetsDir
     useJUnitPlatform()
     testLogging {
         events "passed", "skipped", "failed"
         exceptionFormat = 'short'
         showStandardStreams = true
     }
-    systemProperties = ["spring.profiles.active": "test"]
-    outputs.dir snippetsDir
 }
 
 asciidoctor {
-    dependsOn(test)
-    sourceDir = file("${projectDir}/src/docs/asciidoc") // Asciidoc 파일 소스 경로 설정
-    outputDir = file("${layout.buildDirectory.get()}/docs/asciidoc") // HTML 변환 파일의 출력 경로 설정
-    attributes 'snippets': snippetsDir
+    dependsOn test
+    configurations 'asciidoctorExt'
+    inputs.dir snippetsDir
 
-}
-
-tasks.register('copyAsciidocToStatic', Copy) {
-    dependsOn asciidoctor
-    from("${layout.buildDirectory.get()}/docs/asciidoc") // 출력 경로를 직접 명시
-    into("${layout.buildDirectory.get()}/resources/main/static/docs") // 복사 대상 디렉토리
-    doLast {
-        println "HTML 파일이 복사되었습니다: ${layout.buildDirectory.get()}/resources/main/static/docs"
+    sources {
+        include("**/*.adoc")
     }
 }
 
-tasks.named('resolveMainClassName') {
-    dependsOn 'copyAsciidocToStatic' // 작업 간 의존성 추가
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
 }
 
-bootRun {
-    dependsOn copyAsciidocToStatic
+tasks.register('copyDocument', Copy) {
+    dependsOn asciidoctor
+    from file("${asciidoctor.outputDir}")
+    into file("src/main/resources/static/docs")
+    doLast {
+        println '📚 REST Docs 문서가 static/docs로 복사되었습니다.'
+    }
+}
+
+build {
+    dependsOn copyDocument
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from("${asciidoctor.outputDir}") {
+        into 'static/docs'
+    }
 }

@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum UUIDKey {
     REQUEST("requestId");
-    String key;
+    final String key;
 
     UUIDKey(String requestId) {
         this.key = requestId;
