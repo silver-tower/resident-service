@@ -8,11 +8,6 @@
    - [🚀 통합 개발 워크플로우](#-통합-개발-워크플로우-권장)
    - [⚡ 개발 중 빠른 문서 업데이트](#-개발-중-빠른-문서-업데이트)
    - [📖 API 문서 확인](#-api-문서-확인)
-- [🏗️ Gradle 태스크 구성](#️-gradle-태스크-구성)
-   - [Application](#application)
-   - [Documentation](#documentation)
-   - [Build](#build)
-- [🔍 문제 해결](#-문제-해결)
 - [🚀 시작하기](#-시작하기)
 
 ---
@@ -59,55 +54,7 @@
 ```
 http://localhost:8080/docs/index.html
 ```
----
 
-### API 개발 시
-1. **요구사항 분석 및 API 설계**
-2. **API 코드 작성**
-3. **테스트 코드 작성** (REST Docs 포함)
-4. **문서 생성**: `./gradlew asciidoctor` 실행
-5. **브라우저에서 문서 확인**
-6. **반복 작업 및 검증**
-
----
-
-## 🏗️ Gradle 태스크 구성
-
-### Application
-- **`bootRun`**: 애플리케이션 실행 (문서 포함)
-- **`test`**: 테스트 실행 및 스니펫 생성
-
-### Documentation  
-- **`asciidoctor`**: Asciidoctor 사용해 문서를 생성 (HTML 변환)
-- **`copyDocument`**: 문서를 정적 리소스(`static/docs`)로 복사
-
-### Build
-- **`build`**: 일반 빌드 (문서 포함)
-
----
-
-## 🔍 문제 해결
-
-### Gradle 태스크가 동작하지 않는 경우
-1. **View > Tool Windows > Gradle** 선택
-2. Gradle **새로고침** 버튼 클릭 후 재시도
-
-### 문서가 생성되지 않는 경우
-1. 테스트 확인:
-   ```bash
-   ./gradlew test
-   ```
-2. 테스트가 성공한 경우 다음 명령 실행:
-   ```bash
-   ./gradlew asciidoctor
-   ```
-
-### 서버 실행 시 문서가 반영되지 않을 경우
-```bash
-# 빌드 후 실행
-./gradlew build bootRun
-```
----
 
 ## 🚀 시작하기
 
