@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.0'
     id 'io.spring.dependency-management' version '1.1.7'
-    id "org.asciidoctor.jvm.convert" version "3.3.2"
+    id 'com.epages.restdocs-api-spec' version '0.18.2'
 }
 
 group = 'com.silver-town'
@@ -12,7 +12,6 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-    asciidoctorExt
 }
 
 dependencies {
@@ -21,8 +20,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.18.2'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -30,7 +29,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
-
 
 ext {
     snippetsDir = file('build/generated-snippets')
@@ -46,6 +44,15 @@ repositories {
     mavenCentral()
 }
 
+openapi3 {
+    server = 'http://localhost:8080'
+    title = 'My API'
+    description = 'My API description'
+    version = '0.1.0'
+    format = 'yaml'
+    outputDirectory = file("build/openapi")
+}
+
 test {
     outputs.dir snippetsDir
     useJUnitPlatform()
@@ -54,38 +61,5 @@ test {
         exceptionFormat = 'short'
         showStandardStreams = true
     }
-}
-
-asciidoctor {
-    dependsOn test
-    configurations 'asciidoctorExt'
-    inputs.dir snippetsDir
-
-    sources {
-        include("**/*.adoc")
-    }
-}
-
-asciidoctor.doFirst {
-    delete file('src/main/resources/static/docs')
-}
-
-tasks.register('copyDocument', Copy) {
-    dependsOn asciidoctor
-    from file("${asciidoctor.outputDir}")
-    into file("src/main/resources/static/docs")
-    doLast {
-        println '📚 REST Docs 문서가 static/docs로 복사되었습니다.'
-    }
-}
-
-build {
-    dependsOn copyDocument
-}
-
-bootJar {
-    dependsOn asciidoctor
-    from("${asciidoctor.outputDir}") {
-        into 'static/docs'
-    }
+    finalizedBy 'openapi3'
 }
