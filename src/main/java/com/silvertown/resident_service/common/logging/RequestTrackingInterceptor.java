@@ -32,16 +32,19 @@ public class RequestTrackingInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        if (response.getContentType() != null && response.getContentType().contains("text/html")) {
+        boolean isExcludeLogResponse = response.getContentType().contains("text/html") || response.getContentType().contains("application/octet-stream");
+        if (isExcludeLogResponse) {
             log.info("[{}] Status={}",
                     getClientIp(request),
                     response.getStatus()
             );
-        } else if (response instanceof ContentCachingResponseWrapper cachingResponse) {
+            return;
+        } else if(response instanceof ContentCachingResponseWrapper cachingResponse){
             String responseBody = extractResponseBody(cachingResponse);
-            log.info("[{}] Status={} responseBody={}",
+            log.info("[{}] Status={} responseType={} responseBody={}",
                     getClientIp(request),
                     response.getStatus(),
+                    cachingResponse.getContentType(),
                     responseBody
             );
         }

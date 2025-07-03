@@ -1,5 +1,6 @@
 package com.silvertown.resident_service.person.presentation;
 
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.silvertown.resident_service.common.logging.RequestTrackingFilter;
 import com.silvertown.resident_service.common.vo.Email;
@@ -21,15 +22,15 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
+import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @Import({RequestTrackingFilter.class, JacksonConfig.class})
 @WebMvcTest(controllers = PersonController.class)
@@ -73,13 +74,17 @@ class PersonControllerTest extends RestDocsTestSupport {
                                 .writeValueAsString(requestDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.personId").value("1"))
-                .andDo(document("users",
-                        responseFields(
-                                fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
-                                fieldWithPath("timestamp").type(JsonFieldType.STRING).description("응답시간"),
-                                fieldWithPath("data.personId").type(JsonFieldType.NUMBER).description("생성된 사용자 id"),
-                                fieldWithPath("uuid").type(JsonFieldType.NULL).description("요청 UUID (test에서는 null)")
-                        )
+                .andDo(document("create-user", resource(
+                        ResourceSnippetParameters.builder()
+                                .summary("회원생성")
+                                .description("회원을 생성합니다.")
+                                .responseFields(
+                                        fieldWithPath("success").description("성공여부"),
+                                        fieldWithPath("timestamp").description("응답시간"),
+                                        fieldWithPath("data.personId").description("생성된 사용자 id"),
+                                        fieldWithPath("uuid").description("요청 UUID")
+                                )
+                                .build())
                 ));
     }
 
@@ -92,6 +97,5 @@ class PersonControllerTest extends RestDocsTestSupport {
             registration.addUrlPatterns("/*");
             return registration;
         }
-
     }
 }

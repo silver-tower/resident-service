@@ -46,8 +46,8 @@ repositories {
 
 openapi3 {
     server = 'http://localhost:8080'
-    title = 'My API'
-    description = 'My API description'
+    title = 'Resident Service'
+    description = '실버타운 입주민 서비스는 실버타운의 **회원**, **입주민**, **거주지** 정보를 관리하는 REST API 서비스입니다.'
     version = '0.1.0'
     format = 'yaml'
     outputDirectory = file("build/openapi")
