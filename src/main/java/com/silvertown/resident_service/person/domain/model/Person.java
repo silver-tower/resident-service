@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -21,6 +23,8 @@ public class Person {
     private PersonStatus status;
     private Gender gender;
     private Email email;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public void changeStatusTo(PersonStatus status) {
         if (this.status.canTransitionTo(status)) {

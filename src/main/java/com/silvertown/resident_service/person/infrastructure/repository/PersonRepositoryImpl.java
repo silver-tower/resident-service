@@ -8,6 +8,8 @@ import com.silvertown.resident_service.person.infrastructure.entity.PersonEntity
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @AllArgsConstructor
 public class PersonRepositoryImpl implements PersonRepository {
@@ -24,5 +26,11 @@ public class PersonRepositoryImpl implements PersonRepository {
         PersonEntity entity = personMapper.toEntity(person);
         PersonEntity savedEntity = personJpaRepository.save(entity);
         return personMapper.toDomain(savedEntity);
+    }
+
+    @Override
+    public Optional<Person> findById(int id) {
+        return personJpaRepository.findByPersonId(id)
+                .map(personMapper::toDomain);
     }
 }
