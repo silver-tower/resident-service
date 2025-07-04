@@ -18,25 +18,41 @@ public class PersonMapper {
                 .name(new Name(entity.getName()))
                 .birthDate(new BirthDate(entity.getBirthDate()))
                 .phoneNumber(new Phone(entity.getPhoneNumber()))
-                .status(PersonStatus.valueOf(entity.getStatus().toString()))
-                .gender(Gender.of(entity.getGender().toString()))
+                .status(toDomainStatus(entity.getStatus()))
+                .gender(toDomainGender(entity.getGender()))
                 .email(entity.getEmail() == null ? null : new Email(entity.getEmail()))
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 
     public PersonEntity toEntity(Person domain) {
         int personId = domain.getId();
-        PersonEntity entity =  PersonEntity.builder()
+        return PersonEntity.builder()
                 .personId(personId == 0 ? null : personId)
                 .name(domain.getName().name())
                 .birthDate(domain.getBirthDate().date())
                 .phoneNumber(domain.getPhoneNumber().phone())
-                .status(domain.getStatus() == null ? null : PersonEntity.Status.valueOf(domain.getStatus().toString()))
-                .gender(PersonEntity.Gender.valueOf(domain.getGender().getValue()))
+                .status(toEntityStatus(domain.getStatus()))
+                .gender(toEntityGender(domain.getGender()))
                 .email(domain.getEmail() == null ? null : domain.getEmail().value())
                 .build();
-        return entity;
     }
 
+    public PersonStatus toDomainStatus(PersonEntity.Status status) {
+        return PersonStatus.valueOf(status.toString());
+    }
+
+    public PersonEntity.Status toEntityStatus(PersonStatus status) {
+        return status == null ? null : PersonEntity.Status.valueOf(status.toString());
+    }
+
+    public Gender toDomainGender(PersonEntity.Gender gender) {
+        return Gender.of(gender.toString());
+    }
+
+    public PersonEntity.Gender toEntityGender(Gender gender) {
+        return PersonEntity.Gender.valueOf(gender.getValue());
+    }
 
 }
