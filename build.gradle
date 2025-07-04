@@ -2,16 +2,11 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.0'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.epages.restdocs-api-spec' version '0.18.2'
 }
 
 group = 'com.silver-town'
-version = '0.0.1-SNAPSHOT'
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
+version = '0.0.1'
 
 configurations {
     compileOnly {
@@ -19,29 +14,52 @@ configurations {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.18.2'
     compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
-    annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-test {
-    testLogging {
-        events "passed", "skipped", "failed" // 성공, 실패, 생략된 테스트 표시
-        exceptionFormat = 'short' // 에러 메시지 출력 형식 설정
-        showStandardStreams = true // 표준 출력 보기
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
-tasks.named('test') {
+repositories {
+    mavenCentral()
+}
+
+openapi3 {
+    server = 'http://localhost:8080'
+    title = 'Resident Service'
+    description = '실버타운 입주민 서비스는 실버타운의 **회원**, **입주민**, **거주지** 정보를 관리하는 REST API 서비스입니다.'
+    version = '0.1.0'
+    format = 'yaml'
+    outputDirectory = file("build/openapi")
+}
+
+test {
+    outputs.dir snippetsDir
     useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat = 'short'
+        showStandardStreams = true
+    }
+    finalizedBy 'openapi3'
 }

@@ -12,7 +12,6 @@ import java.util.UUID;
 
 @Component
 public class RequestTrackingFilter implements Filter {
-    private static final String REQUEST_UUID = "requestId";
 
     @Override
     public void doFilter(ServletRequest request,
@@ -22,13 +21,13 @@ public class RequestTrackingFilter implements Filter {
         ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper((HttpServletResponse) response);
 
         String requestId = UUID.randomUUID().toString();
-        MDC.put(REQUEST_UUID, requestId);
-        cachedRequest.setAttribute(REQUEST_UUID, requestId);
+        MDC.put(UUIDKey.REQUEST.getKey(), requestId);
+        cachedRequest.setAttribute(UUIDKey.REQUEST.getKey(), requestId);
         try {
             chain.doFilter(cachedRequest, wrappedResponse);
             wrappedResponse.copyBodyToResponse();
         } finally {
-            MDC.remove(REQUEST_UUID);
+            MDC.remove(UUIDKey.REQUEST.getKey());
             MDC.clear();
         }
     }

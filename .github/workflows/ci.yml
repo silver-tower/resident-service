@@ -23,6 +23,42 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3 # 레포지토리의 코드를 가상 환경에 가져옴
 
+      # AWS CLI 구성 (Dynamic RDS Permissions 추가)
+      - name: Configure AWS CLI
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+          aws configure set region $AWS_REGION
+
+      # GitHub Action Runner의 IP 가져오기
+      - name: Get GitHub Action Runner IP
+        id: get_runner_ip
+        run: |
+          echo "runner_ip=$(curl -s https://checkip.amazonaws.com)" >> $GITHUB_ENV
+
+      # RDS 보안 그룹에 GitHub Runner IP 추가
+      - name: Add GitHub Runner IP to RDS security group
+        env:
+          RUNNER_IP: ${{ env.runner_ip }}
+          SECURITY_GROUP_ID: ${{ secrets.RDS_SECURITY_GROUP_ID }}
+        run: |
+          aws ec2 authorize-security-group-ingress \
+            --group-id $SECURITY_GROUP_ID \
+            --protocol tcp \
+            --port 3306 \
+            --cidr $RUNNER_IP/32
+          echo "Added $RUNNER_IP to RDS security group"
+
+      - name: Set environment variables from secrets
+        run: |
+          echo "SPRING_DATASOURCE_URL=${{ secrets.RDS_URL }}" >> $GITHUB_ENV
+          echo "SPRING_DATASOURCE_USERNAME=${{ secrets.RDS_USERNAME }}" >> $GITHUB_ENV
+          echo "SPRING_DATASOURCE_PASSWORD=${{ secrets.RDS_PASSWORD }}" >> $GITHUB_ENV
+
       # Gradle 캐싱
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
@@ -34,16 +70,32 @@ jobs:
 
       # 의존성 설치
       - name: Set up dependencies
-        run: ./gradlew build  -DskipTests=true
-        # 의존성 설치: 테스트를 실행하지 않고 필요한 라이브러리만 다운로드
+        run: ./gradlew build
 
       # 테스트 실행
-      - name: Run tests
-        run: ./gradlew test
-        # 테스트 실행: 프로젝트 내부의 테스트 코드 실행
-        # 테스트 결과를 기반으로 PR 승인 여부가 결정됨
+      - name: Run Tests
+        env:
+          SPRING_DATASOURCE_URL: ${{ secrets.RDS_URL }}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.RDS_USERNAME }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.RDS_PASSWORD }}
+        run: |
+          ./gradlew test -Dspring.profiles.active=test
 
-      # 실패시 디버깅 정보 출력
+      # 테스트 실패시 디버깅 정보 출력
       - name: Display debug information
         if: failure()
         run: cat build/test-results/test/*.xml || true
+
+      # RDS 보안 그룹에서 GitHub Runner IP 제거
+      - name: Remove GitHub Runner IP from RDS security group
+        if: always()  # 이전 step의 성공 여부와 관계없이 실행
+        env:
+          RUNNER_IP: ${{ env.runner_ip }}
+          SECURITY_GROUP_ID: ${{ secrets.RDS_SECURITY_GROUP_ID }}
+        run: |
+          aws ec2 revoke-security-group-ingress \
+            --group-id $SECURITY_GROUP_ID \
+            --protocol tcp \
+            --port 3306 \
+            --cidr $RUNNER_IP/32
+          echo "Removed $RUNNER_IP from RDS security group"

@@ -1,5 +1,6 @@
 package com.silvertown.resident_service.common.exception;
 
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,14 +15,15 @@ public enum ErrorCode {
     FORBIDDEN("C4030", HttpStatus.FORBIDDEN, "권한이 없습니다."),
 
     // 사용자 관련 에러
-    USER_NOT_FOUND("U4004", HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
+    USER_INVALID_DATA("U4000", HttpStatus.BAD_REQUEST, "필수 필드 입력이 누락되었습니다."),
+    USER_BAD_REQUEST("U4001", HttpStatus.BAD_REQUEST, "입력 데이터 오류입니다."),
     USER_DUPLICATE("U4002", HttpStatus.CONFLICT, "중복된 사용자입니다."),
-    USER_INPUT_INVALID("U4001", HttpStatus.BAD_REQUEST, "유효하지 않은 사용자 입력입니다."),
+    USER_NOT_FOUND("U4004", HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     USER_PASSWORD_MISMATCH("U4005", HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
     USER_ACCOUNT_LOCKED("U4006", HttpStatus.FORBIDDEN, "계정이 잠겼습니다."),
     USER_ACCOUNT_DISABLED("U4007", HttpStatus.FORBIDDEN, "계정이 비활성화 상태입니다."),
     USER_SESSION_EXPIRED("U4008", HttpStatus.UNAUTHORIZED, "세션이 만료되었습니다."),
-    USER_EMAIL_NOT_VERIFIED("U4009", HttpStatus.UNAUTHORIZED, "이메일 인증이 필요합니다."),
+    USER_DUPLICATE_PHONE_NUMBER("U4009", HttpStatus.CONFLICT, "이미 등록된 전화번호입니다."),
 
     // 입주민 관련 에러
     RESIDENT_BAD_REQUEST("R4001", HttpStatus.BAD_REQUEST, "입력 데이터 오류입니다."),
@@ -39,7 +41,8 @@ public enum ErrorCode {
     EMERGENCY_CONTACT_BAD_REQUEST("E4001", HttpStatus.BAD_REQUEST, "비상 연락처 입력 데이터가 유효하지 않습니다."),
     EMERGENCY_CONTACT_NOT_FOUND("E4040", HttpStatus.NOT_FOUND, "비상 연락처를 찾을 수 없습니다."),
     EMERGENCY_CONTACT_DUPLICATE("E4002", HttpStatus.CONFLICT, "중복된 비상 연락처입니다."),
-    EMERGENCY_CONTACT_SERVER_ERROR("E5000", HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류입니다.");
+    EMERGENCY_CONTACT_SERVER_ERROR("E5000", HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류입니다."),
+    ;
 
     private final String code;
     private final HttpStatus httpStatus;

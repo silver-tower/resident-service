@@ -1,6 +1,5 @@
-package com.silvertown.resident_service.common;
+package com.silvertown.resident_service.common.vo;
 
-import com.silvertown.resident_service.common.vo.Name;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

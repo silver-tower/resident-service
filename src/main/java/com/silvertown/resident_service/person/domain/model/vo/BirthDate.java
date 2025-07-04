@@ -2,22 +2,17 @@ package com.silvertown.resident_service.person.domain.model.vo;
 
 import com.silvertown.resident_service.common.exception.CustomError;
 import com.silvertown.resident_service.common.exception.ErrorCode;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
 
-public record BirthDate(Date date) {
+@Slf4j
+public record BirthDate(LocalDate date) {
     public BirthDate {
-        if (date == null) throw CustomError.of(ErrorCode.USER_INPUT_INVALID);
-
-        Calendar now = Calendar.getInstance();
-        now.set(Calendar.HOUR_OF_DAY, 0);
-        now.set(Calendar.MINUTE, 0);
-        now.set(Calendar.SECOND, 0);
-        now.set(Calendar.MILLISECOND, 0);
-        Date nowDate = now.getTime();
-
-        if (!date.before(nowDate)) throw CustomError.of(ErrorCode.USER_INPUT_INVALID);
+        if (date == null) throw CustomError.of(ErrorCode.USER_INVALID_DATA);
+        LocalDate nowDate = LocalDate.now();
+        boolean isBeforeNow = date.isBefore(nowDate);
+        if (!isBeforeNow) throw CustomError.of(ErrorCode.USER_BAD_REQUEST);
     }
 
 }
