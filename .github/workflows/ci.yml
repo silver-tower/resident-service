@@ -59,13 +59,6 @@ jobs:
           echo "SPRING_DATASOURCE_USERNAME=${{ secrets.RDS_USERNAME }}" >> $GITHUB_ENV
           echo "SPRING_DATASOURCE_PASSWORD=${{ secrets.RDS_PASSWORD }}" >> $GITHUB_ENV
 
-      # FIXME: GitHub Actions 테스트 단계에서 간단히 debug 출력 추가
-      - name: Print Debug Info
-        run: |
-          echo "SPRING_DATASOURCE_URL=$SPRING_DATASOURCE_URL"
-          echo "SPRING_DATASOURCE_USERNAME=$SPRING_DATASOURCE_USERNAME"
-          echo "SPRING_DATASOURCE_PASSWORD=$SPRING_DATASOURCE_PASSWORD"
-
       # Gradle 캐싱
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
